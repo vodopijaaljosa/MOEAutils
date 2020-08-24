@@ -5,7 +5,7 @@
 #' \tabular{ll}{
 #' Package: \tab MOEAutils\cr
 #' Type: \tab Package\cr
-#' Version: \tab 1.0.0\cr
+#' Version: \tab 0.1.0\cr
 #' Date: \tab 2020-08-24\cr
 #' License: \tab GPL (>= 2)\cr
 #' LazyLoad: \tab yes\cr

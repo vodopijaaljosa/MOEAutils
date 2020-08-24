@@ -1,0 +1,12 @@
+Package: MOEAutils
+Type: Package
+Title: Utilities for Multiobjective Optimization
+Version: 0.1.0
+Author: Aljosa Vodopija
+Maintainer: Aljosa Vodopija <aljosa.vodopija@ijs.si>
+Description: Utilities for multiobjective otimization with evolutionary algorithms
+License: GPL (>= 2)
+Imports: emoa
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0

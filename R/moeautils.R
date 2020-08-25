@@ -27,7 +27,9 @@ find_pf <- function(res.x, res.y, objs, cons) {
 ### Hypervolume calculation ----------------------------------------------------
 
 calc_hv <- function(res.y, ref.point, objs) {
-  if (nrow(res.y) == 0) {
+  if (is.null(res.y)) {
+    return(0)
+  } else if (nrow(res.y) == 0) {
     return(0)
   } else {
     return(emoa::dominated_hypervolume(t(res.y[, objs]), ref.point))

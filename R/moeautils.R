@@ -35,8 +35,8 @@ calc_hv <- function(res.y, ref.point, objs) {
 ### Run logging ----------------------------------------------------------------
 
 #' @export
-save_run <- function(res, prefix, fn = NULL, objs = NULL, cons = NULL, ref.point = NULL,
-                     settings = NULL, method = c("mco", "demo")) {
+save_run <- function(res, prefix, fn = NULL, objs = NULL, cons = NULL,
+                     ref.point = NULL, settings = NULL, method = c("mco", "demo")) {
 
   res.x <- lapply(1:length(res), function(i) res[[i]]$par)
   res.x <- do.call("rbind", res.x)
@@ -102,6 +102,7 @@ save_run <- function(res, prefix, fn = NULL, objs = NULL, cons = NULL, ref.point
   )
 
   saveRDS(log.run, paste0("results/", log.filename))
+  return(log.run)
 }
 
 ### Statistics -----------------------------------------------------------------

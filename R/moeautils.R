@@ -15,9 +15,11 @@ find_pf <- function(res.x, res.y, objs, cons) {
   }
 
   # keep first front
-  keep <- emoa::nds_rank(t(as.matrix(res.y[, objs]))) == 1
-  res.x <- res.x[keep, ]
-  res.y <- res.y[keep, ]
+  if (any(keep)) {
+    keep <- emoa::nds_rank(t(as.matrix(res.y[, objs]))) == 1
+    res.x <- res.x[keep, ]
+    res.y <- res.y[keep, ]
+  }
 
   return(list(x = res.x, y = res.y))
 }

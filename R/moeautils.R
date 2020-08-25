@@ -35,7 +35,7 @@ calc_hv <- function(res.y, ref.point, objs) {
 ### Run logging ----------------------------------------------------------------
 
 #' @export
-save_run <- function(res, prefix, path="results/" fn = NULL, objs = NULL, cons = NULL,
+save_run <- function(res, prefix, path="results/", fn = NULL, objs = NULL, cons = NULL,
                      ref.point = NULL, settings = NULL, method = c("mco", "demo")) {
 
   res.x <- lapply(1:length(res), function(i) res[[i]]$par)

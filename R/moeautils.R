@@ -111,12 +111,78 @@ save_run <- function(res, prefix, path="results/", fn = NULL, objs = NULL, cons 
 
 ### Statistics -----------------------------------------------------------------
 
-# todo
+#' @export
+create_stat <- function(prefix, path = "results/", settings = NULL) {
+
+  log.filename <- create_filename(prefix, settings, use.uuid = FALSE, sufix = "")
+  filenames <- list.files(path, log.filename, full.names = TRUE)
+  run.all <- lapply(filenames, readRDS)
+
+  # metada
+  run <- run.all[[1]]
+  prefix <- run$metadata$prefix
+  settings <- run$metadata$settings
+  objs <- run$metadata$objs
+  cons <- run$metadata$cons
+
+  # hv final
+  ref.point <- run$hv$ref
+  hv.final.all <- sapply(run.all, function(x) x$hv$final)
+  hv.final.mean <- mean(hv.final.all)
+  hv.final.sd <- sd(hv.final.all)
+  hv.final.summary <- summary(hv.final.all)
+
+  # hv prog
+  hv.prog.all <- sapply(run.all, function(x) x$hv$prog)
+  hv.prog.mean <- apply(hv.prog.all, 1, mean)
+  hv.prog.sd   <- apply(hv.prog.all, 1, sd)
+
+  log.stat <- list(
+
+    "metadata" = list(
+      "prefix" = prefix,
+      "settings" = settings,
+      "objs" = objs,
+      "cons" = cons,
+      "filename" = log.filename
+    ),
+
+    "hv" = list(
+      "ref" = ref.point,
+      "prog" = list(
+        "mean" = hv.prog.mean,
+        "sd" = hv.prog.sd
+      ),
+      "final" =  list(
+        "mean" = hv.final.mean,
+        "sd" = hv.final.sd,
+        "summary" = hv.final.summary
+      )
+    )
+
+    # todo: union of all fronts and median runs
+    #"pf" = list(
+    #  "x" = res.x.g,
+    #  "y" = res.y.g[, objs],
+    #  "c" = res.y.g[, cons]
+    #),
+
+    #"gens" = gens
+  )
+
+  return(log.stat)
+
+}
 
 ### Helpers --------------------------------------------------------------------
 
-create_filename <- function(filename, settings = NULL) {
-  id <- uuid::UUIDgenerate()
+create_filename <- function(filename, settings = NULL, use.uuid = TRUE, sufix = ".RData") {
+
+  if (use.uuid) {
+    id <- paste0("_uuid-", uuid::UUIDgenerate())
+  } else {
+    id <- ""
+  }
 
   if (!is.null(settings)) {
     for (i in 1:length(settings)) {
@@ -127,7 +193,7 @@ create_filename <- function(filename, settings = NULL) {
     }
   }
 
-  filename <- paste0(filename, "_uuid-", id, ".RData")
+  filename <- paste0(filename, id, sufix)
 
   return(filename)
 }

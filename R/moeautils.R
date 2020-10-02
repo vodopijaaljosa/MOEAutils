@@ -109,7 +109,7 @@ save_run <- function(res, prefix, path="results/", fn = NULL, objs = NULL, cons 
   return(log.run)
 }
 
-#' export
+#' @export
 recompute_hv <- function(log.filename, ref.point, path = "results/") {
   path_to <- paste0(path, log.filename)
   log.run <- readRDS(path_to)

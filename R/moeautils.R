@@ -109,6 +109,42 @@ save_run <- function(res, prefix, path="results/", fn = NULL, objs = NULL, cons 
   return(log.run)
 }
 
+#' export
+recompute_hv <- function(log.filename, ref.point, path = "results/") {
+  path_to <- paste0(path, log.filename)
+  log.run <- readRDS(path_to)
+
+  objs <- log.run$metadata$objs
+  cons <- log.run$metadata$cons
+
+  res.x <- log.run$run$x
+  res.y <- cbind(log.run$run$y, log.run$run$c)
+
+  gens <- log.run$gens
+  no.gen <- tail(gens, 1)
+
+  hv.prog <- NULL
+  res.x.g <- NULL
+  res.y.g <- NULL
+
+  for (g in 1:no.gen) {
+    res.x.g <- rbind(res.x.g, res.x[gens == g, ])
+    res.y.g <- rbind(res.y.g, res.y[gens == g, ])
+    res.x.y.g <- find_pf(res.x.g, res.y.g, objs, cons)
+    res.x.g <- res.x.y.g$x
+    res.y.g <- res.x.y.g$y
+    hv.prog <- c(hv.prog, calc_hv(res.y.g , ref.point, objs))
+  }
+
+  log.run$hv <- list(
+    "ref" = ref.point,
+    "prog" = hv.prog,
+    "final" = tail(hv.prog, 1)
+  )
+
+  saveRDS(log.run, path_to)
+}
+
 ### Statistics -----------------------------------------------------------------
 
 #' @export

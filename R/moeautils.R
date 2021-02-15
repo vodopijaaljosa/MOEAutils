@@ -2,7 +2,9 @@
 
 # todo: include additional MOEA packages
 find_pf <- function(res.x, res.y, objs, cons) {
-
+  
+  keep <- rep(TRUE, dim(res.x)[1])
+  
   # keep feasible solutions
   if (!is.null(cons)) {
     if (length(cons) > 1) {
